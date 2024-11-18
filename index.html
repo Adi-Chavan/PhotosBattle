@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Battle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .fade-out { animation: fadeOut 0.5s; }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        .image-container img { transition: transform 0.3s ease; }
+        .image-container:hover img { transform: scale(1.05); }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen" x-data="photoBattle">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Photo Battle</h1>
+        </header>
+
+        <div class="text-center mb-6">
+            <span class="text-lg font-semibold text-gray-700">Battle #<span x-text="battleCount"></span></span>
+        </div>
+
+        <template x-if="error">
+            <div class="text-red-500 text-center mb-4" x-text="error"></div>
+        </template>
+
+        <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+            <div class="image-container cursor-pointer relative group w-full md:w-1/2 max-w-lg"
+                 @click="selectWinner('left')"
+                 :class="{'opacity-0': loading}">
+                <img :src="leftImage.download_url" 
+                     :alt="'Photo by ' + leftImage.author"
+                     class="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg">
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 rounded-lg"></div>
+            </div>
+
+            <div class="text-2xl font-bold text-gray-700">VS</div>
+
+            <div class="image-container cursor-pointer relative group w-full md:w-1/2 max-w-lg"
+                 @click="selectWinner('right')"
+                 :class="{'opacity-0': loading}">
+                <img :src="rightImage.download_url" 
+                     :alt="'Photo by ' + rightImage.author"
+                     class="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg">
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 rounded-lg"></div>
+            </div>
+        </div>
+
+        <div x-show="loading" 
+             class="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-gray-800"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
